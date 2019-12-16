@@ -1,24 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Controllers;
 
 import EJB.MarcasFacade;
 import Entity.Marcas;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 
-/**
- *
- * @author cesar.murciausam
- */
-public class marcas implements Serializable {
+@Named(value = "managetMarcas")
+@ManagedBean
+@SessionScoped
+public class marcasFacade implements Serializable {
 
     String mensaje;
 
