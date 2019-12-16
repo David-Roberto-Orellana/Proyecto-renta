@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"></link>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
+    </h:head>
+    <h:body>
+        
+
+
+        <nav> <!--Inicio de navbar -->
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo">Tipo Licencia</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <h:form id="da">
+                    <p:commandButton value="Nuevo" oncomplete="PF('tip').show()"/>
+                    </h:form>
+                   <!-- <li><a href="" oncomplete="PF('tip').show()">Nuevo</a></li>-->
+                </ul>
+            </div>
+        </nav> <!--Fin de navbar -->
+        
+        <!--Inicio Modal-->
+        <p:dialog widgetVar="tip" modal="true" showEffect="explode" hideEffect="explode" resizable="false">
+            <h:form id="tp">
+                <p:panelGrid columns="2">
+                    <p:outputLabel for="txtLicencia" value="Tipo de licencia"/>
+                    <p:inputText id="txtLicencia" value="#{managedLicencias.licencias.licencias}" required="true"/>
+                    
+                    <p:commandButton value="Guardar" actionListener="#{managedLicencias.insertar_licencias()}"
+                                     update=":Datos tp" oncomplete="PF('tip').hide"/>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        <!--Fin de Modal -->
+        
+        <div class="row">        
+            <div class="col s3"><!--Inicia Menu laterial -->
+                <h:form>
+                    <p:growl id="messages" showDetail="true"/>
+
+                    <p:slideMenu style="width:200px">
+                        <p:submenu label="Clientes" icon="pi pi-users" >
+                            <p:menuitem value="Clientes" url="http://www.prime.com.tr" update="messages" icon="pi pi-users" />
+                            <p:menuitem value="Extrangero" url="http://www.prime.com.tr" update="messages" icon="pi pi-globe" />
+                        </p:submenu>
+                        <p:submenu label="Vehiculos" icon="pi pi-chart-bar">
+                            <p:menuitem value="Marcas" url="http://www.prime.com.tr" ajax="false" icon="pi pi-star"/>
+                            <p:menuitem value="Modelos" url="http://www.prime.com.tr"  ajax="false" icon="pi pi-tags"/>
+                            <p:menuitem value="Vehiculos" url="http://www.prime.com.tr"  ajax="false" icon="pi pi-chart-bar"/>
+                            <p:menuitem value="Historiales" url="http://www.prime.com.tr"  ajax="false" icon="pi pi-copy"/>
+                            <p:menuitem value="Moras" url="http://www.prime.com.tr"  ajax="false" icon="pi pi-money-bill"/>
+                            <p:menuitem value="Reparaciones" url="http://www.prime.com.tr"  ajax="false" icon="pi pi-key"/>
+                        </p:submenu>
+                        <p:separator />
+                        <p:submenu label="Otros" icon="pi pi-folder">
+                            <p:menuitem value="Partes vehiculos" url="http://www.prime.com.tr" icon="pi pi-bars"/>
+                            <p:menuitem value="Licencias" url="http://www.primefaces.org" icon="pi pi-folder"/>
+                            <p:menuitem value="Ver perfil" url="http://www.primefaces.org" icon="pi pi-user"/>
+                        </p:submenu>
+                    </p:slideMenu>
+                </h:form>
+            </div> <!--Termina menu laterial -->
+
+            <div class="col s9"><!--Inicia cuerpo de la pagina -->
+
+                <h:form id="Datos">
+                    <p:fieldset legend="Datos Licencia" toggleable="true">
+                        <p:dataTable value="#{managedLicencias.listalicencia}" var="lic">
+                            <p:column headerText="Id">
+                                <h:outputText value="#{lic.id_licencia}"/>
+                            </p:column>
+
+                            <p:column headerText="Tipo Licencia">
+                                <h:outputText value="#{lic.nombre}"/>
+                            </p:column>
+
+                            <p:column headerText="Opciones">
+                                <p:commandButton value="Editar" actionListener="#{managedLicencias.consultarId_licencias(l)}"
+                                                 update=":tp" oncomplete="PF('tip').show"/>
+                            </p:column>
+                    </p:dataTable>
+                </p:fieldset>
+            </h:form>
+
+        </div><!--Termina cuerpo de la pagina -->
+    </div>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    </h:body>
+</html>
+

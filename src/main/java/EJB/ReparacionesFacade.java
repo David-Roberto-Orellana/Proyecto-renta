@@ -17,7 +17,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class ReparacionesFacade extends AbstractFacade<Reparaciones> implements ReparacionesFacadeLocal {
 
-    @PersistenceContext(unitName = "com.mycompany_Sistema_Renta_Carros_war_1.0-SNAPSHOTPU")
+    @PersistenceContext(unitName = "carros_PU")
     private EntityManager em;
 
     @Override

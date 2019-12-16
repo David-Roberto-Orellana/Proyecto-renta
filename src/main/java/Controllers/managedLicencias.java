@@ -2,7 +2,6 @@
 package Controllers;
 
 import EJB.LicenciasFacadeLocal;
-import Entity.Extranjeros;
 import Entity.Licencias;
 import java.io.Serializable;
 import java.util.List;
@@ -22,6 +21,7 @@ public class managedLicencias implements Serializable{
     String mensaje;
 
     public List<Licencias> getListalicencia() {
+        this.listalicencia = this.licenciaEJBFacadeLocal.findAll();
         return listalicencia;
     }
 
@@ -38,7 +38,7 @@ public class managedLicencias implements Serializable{
     }
     
      @PostConstruct
-    public void init() {
+    private void init() {
         licencias = new Licencias();
     }
     
