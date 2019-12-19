@@ -42,6 +42,7 @@ public class managedLicencias implements Serializable {
     @PostConstruct
     private void init() {
         licencias = new Licencias();
+    this.licencias.setIdLicencia(0);
     }
 
     public void consultar_licencias() {
@@ -92,6 +93,15 @@ public class managedLicencias implements Serializable {
         } catch (Exception e) {
             this.mensaje = "Error al Eliminar";
         }
+         FacesMessage msg = new FacesMessage(this.mensaje);
+         FacesContext.getCurrentInstance().addMessage(mensaje, msg);
     }
 
+    
+    public void limpiar(){
+    this.licencias = new Licencias();
+    this.licencias.setIdLicencia(0);
+    
+    }
+    
 }
