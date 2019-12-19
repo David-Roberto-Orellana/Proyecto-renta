@@ -68,6 +68,8 @@ String mensaje;
     public void init() {
         this.modelos = new Modelos();
         this.marcas = new Marcas();
+        modelos.setIdModelo(0);
+       
     }
 
     public void consultar_modelos() {
@@ -93,7 +95,10 @@ String mensaje;
 
     public void actualizar_vehiculos() {
         try {
+            this.modelos.setIdMarca(marcas);
             modelosFacadeLocal.edit(modelos);
+            this.modelos=new Modelos();
+            this.marcas=new Marcas();
             this.mensaje = "Actualizado Correctamente";
         } catch (Exception e) {
             this.mensaje = "Error al Actualizar";
@@ -117,6 +122,7 @@ String mensaje;
 
     public void consultarID_vehiculos(Modelos mod) {
         try {
+            this.marcas.setIdMarca(mod.getIdMarca().getIdMarca());
             this.modelos = mod;
         } catch (Exception e) {
         }

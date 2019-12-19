@@ -1,8 +1,10 @@
 Entity\Extranjeros_.class
 EJB\AbstractFacade.class
+Controllers\managedModelos.class
 Entity\Reparaciones_.class
 Entity\Partes.class
 Entity\Usuarios.class
+Controllers\managedVehiculos.class
 Entity\Vehiculos.class
 EJB\HistorialesFacade.class
 EJB\MorasFacadeLocal.class
@@ -23,6 +25,7 @@ Entity\Moras_.class
 EJB\MarcasFacadeLocal.class
 Entity\Marcas.class
 EJB\LicenciasFacadeLocal.class
+Controllers\managedPartes.class
 EJB\MorasFacade.class
 EJB\ModelosFacade.class
 Entity\Modelos_.class
@@ -36,6 +39,7 @@ Controllers\managedLicencias.class
 EJB\LicenciasFacade.class
 EJB\ExtranjerosFacade.class
 Controllers\managedClientes.class
+Controllers\ManagedUsuario.class
 EJB\ModelosFacadeLocal.class
 EJB\ExtranjerosFacadeLocal.class
 EJB\VehiculosFacadeLocal.class
