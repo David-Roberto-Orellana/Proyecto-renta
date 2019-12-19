@@ -6,6 +6,7 @@
 package Entity;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,48 +14,77 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author azucena.rivasusam
+ * @author cesar.murciausam
  */
 @Entity
 @Table(name = "reparaciones")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Reparaciones.findAll", query = "SELECT r FROM Reparaciones r")
+    , @NamedQuery(name = "Reparaciones.findByIdReparacion", query = "SELECT r FROM Reparaciones r WHERE r.idReparacion = :idReparacion")
+    , @NamedQuery(name = "Reparaciones.findByFechaIngreso", query = "SELECT r FROM Reparaciones r WHERE r.fechaIngreso = :fechaIngreso")
+    , @NamedQuery(name = "Reparaciones.findByDescripcion", query = "SELECT r FROM Reparaciones r WHERE r.descripcion = :descripcion")})
 public class Reparaciones implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_reparacion;
-
+    @Basic(optional = false)
+    @Column(name = "id_reparacion")
+    private Integer idReparacion;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 10)
     @Column(name = "fecha_ingreso")
-    private String fecha_ingreso;
-
+    private String fechaIngreso;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
     @Column(name = "descripcion")
     private String descripcion;
-
-    @ManyToOne(optional = false)
     @JoinColumn(name = "id_vehiculo", referencedColumnName = "id_vehiculo")
-    private Vehiculos vehiculos;
-
     @ManyToOne(optional = false)
+    private Vehiculos idVehiculo;
     @JoinColumn(name = "id_parte", referencedColumnName = "id_parte")
-    private Partes partes;
+    @ManyToOne(optional = false)
+    private Partes idParte;
 
-    public int getId_reparacion() {
-        return id_reparacion;
+    public Reparaciones() {
     }
 
-    public void setId_reparacion(int id_reparacion) {
-        this.id_reparacion = id_reparacion;
+    public Reparaciones(Integer idReparacion) {
+        this.idReparacion = idReparacion;
     }
 
-    public String getFecha_ingreso() {
-        return fecha_ingreso;
+    public Reparaciones(Integer idReparacion, String fechaIngreso, String descripcion) {
+        this.idReparacion = idReparacion;
+        this.fechaIngreso = fechaIngreso;
+        this.descripcion = descripcion;
     }
 
-    public void setFecha_ingreso(String fecha_ingreso) {
-        this.fecha_ingreso = fecha_ingreso;
+    public Integer getIdReparacion() {
+        return idReparacion;
+    }
+
+    public void setIdReparacion(Integer idReparacion) {
+        this.idReparacion = idReparacion;
+    }
+
+    public String getFechaIngreso() {
+        return fechaIngreso;
+    }
+
+    public void setFechaIngreso(String fechaIngreso) {
+        this.fechaIngreso = fechaIngreso;
     }
 
     public String getDescripcion() {
@@ -65,42 +95,37 @@ public class Reparaciones implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Vehiculos getVehiculos() {
-        return vehiculos;
+    public Vehiculos getIdVehiculo() {
+        return idVehiculo;
     }
 
-    public void setVehiculos(Vehiculos vehiculos) {
-        this.vehiculos = vehiculos;
+    public void setIdVehiculo(Vehiculos idVehiculo) {
+        this.idVehiculo = idVehiculo;
     }
 
-    public Partes getPartes() {
-        return partes;
+    public Partes getIdParte() {
+        return idParte;
     }
 
-    public void setPartes(Partes partes) {
-        this.partes = partes;
+    public void setIdParte(Partes idParte) {
+        this.idParte = idParte;
     }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 37 * hash + this.id_reparacion;
+        int hash = 0;
+        hash += (idReparacion != null ? idReparacion.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Reparaciones)) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Reparaciones other = (Reparaciones) obj;
-        if (this.id_reparacion != other.id_reparacion) {
+        Reparaciones other = (Reparaciones) object;
+        if ((this.idReparacion == null && other.idReparacion != null) || (this.idReparacion != null && !this.idReparacion.equals(other.idReparacion))) {
             return false;
         }
         return true;
@@ -108,7 +133,7 @@ public class Reparaciones implements Serializable {
 
     @Override
     public String toString() {
-        return "Reparaciones{" + "id_reparacion=" + id_reparacion + '}';
+        return "EJB.Reparaciones[ idReparacion=" + idReparacion + " ]";
     }
-
+    
 }

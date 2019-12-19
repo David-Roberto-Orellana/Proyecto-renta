@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"></link>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
+    </h:head>
+    <h:body>
+        <p:growl id="msj"/>
+        <nav> <!--Inicio de navbar -->
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo">Moras</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <h:form id="da">
+                        <p:commandButton value="Nuevo" oncomplete="PF('tip').show()"/>
+                    </h:form>
+                    <!-- <li><a href="" oncomplete="PF('tip').show()">Nuevo</a></li>-->
+                </ul>
+            </div>
+        </nav> <!--Fin de navbar -->
+        <!--Inicio Modal-->
+        <p:dialog widgetVar="tip" modal="true" showEffect="explode" hideEffect="explode" resizable="false">
+            <p:ajax event="close" listener="#{managedMoras.limpiar_Mora()}" update=":tp" />
+            <h:form id="tp">
+
+                <p:outputLabel for="txtdias" value="Dias"/>
+                <p:inputText id="txtdias" value="#{managedMoras.mora.dias}" required="true"/>
+
+                <p:outputLabel for="txttotal" value="Total"/>
+                <p:inputText id="txttotal" value="#{managedMoras.mora.total}" required="true"/>
+
+                <p:outputLabel for="selectHistorial" value="fecha_inicio"/><br></br>
+                <p:selectOneMenu id="selectHistorial" value="#{managedMoras.historiales.idHistorial}">
+                    <f:selectItem itemLabel="Seleccione Fecha inicio" itemValue="" noSelectionOption="true"/>
+                    <f:selectItems value="#{managedMoras.listahistorial}" var="ma" itemLabel="#{ma.fechaInicio}" itemValue="#{ma.idHistorial}"/>
+                </p:selectOneMenu><br></br><br></br>
+
+                <p:commandButton value="Guardar" actionListener="#{managedMoras.insertar_mora()}"
+                                 rendered="#{managedMoras.mora.idMora == 0}"
+                                 update=":Datos tp :msj" oncomplete="PF('tip').hide()" />
+
+                <p:commandButton value="Actualizar" actionListener="#{managedMoras.actualizar_mora()}"
+                                 rendered="#{managedMoras.mora.idMora  != 0}"
+                                 update=":Datos tp :msj" oncomplete="PF('tip').hide()" />
+
+            </h:form>
+        </p:dialog>
+
+        <!--Fin de Modal -->
+        <div class="row">        
+            <div class="col s3"><!--Inicia Menu laterial -->
+                <ui:include src="menu.xhtml"/>
+            </div> <!--Termina menu laterial -->
+
+            <div class="col s9"><!--Inicia cuerpo de la pagina -->
+
+                <h:form id="Datos">
+                    <p:fieldset legend="Moras" toggleable="true">
+                        <p:dataTable value="#{managedMoras.listamora}" var="mo">
+                            
+
+                            <p:column headerText="Dias" width="100">
+                                <h:outputText value="#{mo.dias}"/>
+                            </p:column>
+                            <p:column headerText="Total" >
+                                <h:outputText value="#{mo.total}"/>
+                            </p:column>                            
+                            <p:column headerText="Placa" width="100">
+                                <h:outputText value="#{mo.idHistorial.idVehiculo.placa}" />
+                            </p:column>
+
+                            <p:column headerText="Opciones">
+                                <p:commandButton value="Editar" actionListener="#{managedMoras.consultarID_mora(mo)}"
+                                                 update=":tp" oncomplete="PF('tip').show()" />
+                           
+                                <p:commandButton value="Eliminar" actionListener="#{managedMoras.eliminar_mora(mo)}"
+                                                 update=":Datos :msj"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:fieldset>
+                </h:form>
+
+            </div><!--Termina cuerpo de la pagina -->
+        </div>
+
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+    </h:body>
+</html>
+

@@ -1,13 +1,17 @@
 package Controllers;
 
 import EJB.ClientesFacadeLocal;
+import EJB.ExtranjerosFacadeLocal;
+import EJB.LicenciasFacadeLocal;
 import Entity.Clientes;
+import Entity.Extranjeros;
+import Entity.Licencias;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
@@ -15,11 +19,48 @@ import javax.inject.Named;
 @SessionScoped
 public class managedClientes implements Serializable {
 
-    @EJB
-    private List<Clientes> listacliente;
-    private ClientesFacadeLocal clientesEJBFacadeLocal;
-    private Clientes clientes;
     String mensaje;
+
+    @EJB
+    private ClientesFacadeLocal clientesEJBFacadeLocal;
+    private List<Clientes> listacliente;
+    private Clientes clientes;
+
+    @EJB
+    private LicenciasFacadeLocal licenciasFacadeLocal;
+    private Licencias licencias;
+    private List<Licencias> listaLicencias;
+
+    @EJB
+    private ExtranjerosFacadeLocal ExtranjerosEJBFacadeLocal;
+    private List<Extranjeros> listaextranjero;
+    private Extranjeros extranjeros;
+
+    public List<Extranjeros> getListaextranjero() {
+        ExtranjerosEJBFacadeLocal.findAll();
+        return listaextranjero;
+    }
+
+    public void setListaextranjero(List<Extranjeros> listaextranjero) {
+        this.listaextranjero = listaextranjero;
+    }
+
+    public Extranjeros getExtranjeros() {
+        return extranjeros;
+    }
+
+    public void setExtranjeros(Extranjeros extranjeros) {
+        this.extranjeros = extranjeros;
+    }
+
+    public List<Licencias> getListaLicencias() {
+        listaLicencias = licenciasFacadeLocal.findAll();
+        return listaLicencias;
+    }
+
+    public void setListaLicencias(List<Licencias> listaLicencias) {
+        this.listaLicencias = listaLicencias;
+    }
 
     public List<Clientes> getListacliente() {
         this.listacliente = this.clientesEJBFacadeLocal.findAll();
@@ -46,10 +87,21 @@ public class managedClientes implements Serializable {
         this.mensaje = mensaje;
     }
 
+    public Licencias getLicencias() {
+        return licencias;
+    }
+
+    public void setLicencias(Licencias licencias) {
+        this.licencias = licencias;
+    }
+
     @PostConstruct
 
-    public void init() {
+    private void init() {
         clientes = new Clientes();
+        licencias = new Licencias();
+        extranjeros = new Extranjeros();
+        clientes.setIdClientes(0);
     }
 
     public void consultar_clientes() {
@@ -62,7 +114,12 @@ public class managedClientes implements Serializable {
 
     public void insertar_clientes() {
         try {
+            clientes.setIdLicencia(licencias);
+            
             clientesEJBFacadeLocal.create(clientes);
+            extranjeros.setIdExtranjero(clientesEJBFacadeLocal.Last_id());
+            System.out.println("******************************************"+clientesEJBFacadeLocal.Last_id());
+            ExtranjerosEJBFacadeLocal.create(extranjeros);
             this.mensaje = "Insertado Correctamente";
         } catch (Exception e) {
             this.mensaje = "Error al Insertar";
@@ -99,6 +156,13 @@ public class managedClientes implements Serializable {
         } catch (Exception e) {
             this.mensaje = "Error al Eliminar";
         }
+    }
+
+    public void limpiar() {
+        clientes = new Clientes();
+        licencias = new Licencias();
+        extranjeros = new Extranjeros();
+        clientes.setIdClientes(0);
     }
 
 }

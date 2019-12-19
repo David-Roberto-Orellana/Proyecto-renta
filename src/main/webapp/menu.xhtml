@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" >
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"></link>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
+    </h:head>
+    <h:body>
+        
+                        <h:form>
+                    <p:growl id="messages" showDetail="true"/>
+
+                    <p:slideMenu style="width:200px">
+                        <p:submenu label="Clientes" icon="pi pi-users" >
+                            <p:menuitem value="Clientes" url="http://www.prime.com.tr" update="messages" icon="pi pi-users" />
+                            <p:menuitem value="Extrangero" url="http://www.prime.com.tr" update="messages" icon="pi pi-globe" />
+                        </p:submenu>
+                        <p:submenu label="Vehiculos" icon="pi pi-chart-bar">
+                            <p:menuitem value="Marcas" url="http://www.prime.com.tr" ajax="false" icon="pi pi-star"/>
+                            <p:menuitem value="Modelos" url="http://www.prime.com.tr"  ajax="false" icon="pi pi-tags"/>
+                            <p:menuitem value="Vehiculos" url="http://www.prime.com.tr"  ajax="false" icon="pi pi-chart-bar"/>
+                            <p:menuitem value="Historiales" url="http://www.prime.com.tr"  ajax="false" icon="pi pi-copy"/>
+                            <p:menuitem value="Moras" url="http://www.prime.com.tr"  ajax="false" icon="pi pi-money-bill"/>
+                            <p:menuitem value="Reparaciones" url="http://www.prime.com.tr"  ajax="false" icon="pi pi-key"/>
+                        </p:submenu>
+                        <p:separator />
+                        <p:submenu label="Otros" icon="pi pi-folder">
+                            <p:menuitem value="Partes vehiculos" url="http://www.prime.com.tr" icon="pi pi-bars"/>
+                            <p:menuitem value="Licencias" url="http://www.primefaces.org" icon="pi pi-folder"/>
+                            <p:menuitem value="Ver perfil" url="http://www.primefaces.org" icon="pi pi-user"/>
+                        </p:submenu>
+                    </p:slideMenu>
+                </h:form>
+
+        
+        
+        
+        
+    </h:body>
+</html>
+

@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"></link>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
+    </h:head>
+
+    <h:body>
+        <p:growl id="msj"/>
+
+        <nav> <!--Inicio de navbar -->
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo">Tipo de Marcas</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <h:form id="da">
+                        <p:commandButton value="Nuevo" oncomplete="PF('tip').show()"/>
+                    </h:form>
+                    <!-- <li><a href="" oncomplete="PF('tip').show()">Nuevo</a></li>-->
+                </ul>
+            </div>
+        </nav> <!--Fin de navbar -->
+
+        <!--Inicio Modal-->
+        <p:dialog widgetVar="tip" modal="true" showEffect="explode" hideEffect="explode" resizable="false">
+            <p:ajax event="close" listener="#{managedMarcas.limpiar_marcas()}" update=":tp" />
+            <h:form id="tp">
+
+                <p:outputLabel for="txtmarcas" value="Nombre de la Marca"/>
+                <p:inputText id="txtmarcas" value="#{managedMarcas.marcas.nombre}" required="true"/>
+
+                <p:commandButton value="Guardar" actionListener="#{managedMarcas.insertar_marca()}"
+                                 rendered="#{managedMarcas.marcas.idMarca == 0}"
+                                 update=":Datos tp :msj" oncomplete="PF('tip').hide()" />
+                <p:commandButton value="Actualizar" actionListener="#{managedMarcas.actualizar_marca()}"
+                                 rendered="#{managedMarcas.marcas.idMarca != 0}"
+                                 update=":Datos tp :msj" oncomplete="PF('tip').hide()" />
+
+            </h:form>
+        </p:dialog>
+
+        <!--Fin de Modal -->
+        <div class="row">        
+            <div class="col s3"><!--Inicia Menu laterial -->
+                <ui:include src="menu.xhtml"/>
+            </div> <!--Termina menu laterial -->
+            <div class="col s9"><!--Inicia cuerpo de la pagina -->
+
+                <h:form id="Datos">
+                    <p:fieldset legend="Datos Marcas" toggleable="true">
+                        <p:dataTable value="#{managedMarcas.listamarcas}" var="marca">
+                            
+
+                            <p:column headerText="Nombre de la Marca">
+                                <h:outputText value="#{marca.nombre}"/>
+                            </p:column>
+
+                            <p:column headerText="Opciones">
+                                <p:commandButton value="Editar" actionListener="#{managedMarcas.consultarId_marcas(marca)}"
+                                                 update=":tp" oncomplete="PF('tip').show()" />
+                                <p:commandButton value="Eliminar" actionListener="#{managedMarcas.eliminar_marca(marca)}"
+                                                 update=":Datos :msj"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:fieldset>
+                </h:form>
+
+            </div><!--Termina cuerpo de la pagina -->
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    </h:body>
+</html>
+

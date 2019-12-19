@@ -6,7 +6,7 @@
 package Entity;
 
 import java.io.Serializable;
-import javax.annotation.Generated;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,37 +14,63 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author azucena.rivasusam
+ * @author cesar.murciausam
  */
-
 @Entity
 @Table(name = "moras")
-public class Moras implements Serializable{
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Moras.findAll", query = "SELECT m FROM Moras m")
+    , @NamedQuery(name = "Moras.findByIdMora", query = "SELECT m FROM Moras m WHERE m.idMora = :idMora")
+    , @NamedQuery(name = "Moras.findByDias", query = "SELECT m FROM Moras m WHERE m.dias = :dias")
+    , @NamedQuery(name = "Moras.findByTotal", query = "SELECT m FROM Moras m WHERE m.total = :total")})
+public class Moras implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_mora;
-    
+    @Basic(optional = false)
+    @Column(name = "id_mora")
+    private Integer idMora;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "dias")
     private int dias;
-    
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "total")
     private double total;
-    
+    @JoinColumn(name = "id_historial", referencedColumnName = "id_historial")
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id_historial",referencedColumnName = "id_historial")
-    private Historiales historiales;
+    private Historiales idHistorial;
 
-    public int getId_mora() {
-        return id_mora;
+    public Moras() {
     }
 
-    public void setId_mora(int id_mora) {
-        this.id_mora = id_mora;
+    public Moras(Integer idMora) {
+        this.idMora = idMora;
+    }
+
+    public Moras(Integer idMora, int dias, double total) {
+        this.idMora = idMora;
+        this.dias = dias;
+        this.total = total;
+    }
+
+    public Integer getIdMora() {
+        return idMora;
+    }
+
+    public void setIdMora(Integer idMora) {
+        this.idMora = idMora;
     }
 
     public int getDias() {
@@ -63,34 +89,29 @@ public class Moras implements Serializable{
         this.total = total;
     }
 
-    public Historiales getHistoriales() {
-        return historiales;
+    public Historiales getIdHistorial() {
+        return idHistorial;
     }
 
-    public void setHistoriales(Historiales historiales) {
-        this.historiales = historiales;
+    public void setIdHistorial(Historiales idHistorial) {
+        this.idHistorial = idHistorial;
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 67 * hash + this.id_mora;
+        int hash = 0;
+        hash += (idMora != null ? idMora.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Moras)) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Moras other = (Moras) obj;
-        if (this.id_mora != other.id_mora) {
+        Moras other = (Moras) object;
+        if ((this.idMora == null && other.idMora != null) || (this.idMora != null && !this.idMora.equals(other.idMora))) {
             return false;
         }
         return true;
@@ -98,9 +119,7 @@ public class Moras implements Serializable{
 
     @Override
     public String toString() {
-        return "Moras{" + "id_mora=" + id_mora + '}';
+        return "EJB.Moras[ idMora=" + idMora + " ]";
     }
     
-    
-
 }

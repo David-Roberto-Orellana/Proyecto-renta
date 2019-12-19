@@ -1,0 +1,204 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"></link>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
+    </h:head>
+    <h:body>
+
+        <p:growl id="msj"/>
+
+        <nav> <!--Inicio de navbar -->
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo">Tipo Licencia</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <h:form id="da">
+                        <p:commandButton value="Nuevo" oncomplete="PF('tip').show()"/>
+                    </h:form>
+                    <!-- <li><a href="" oncomplete="PF('tip').show()">Nuevo</a></li>-->
+                </ul>
+            </div>
+        </nav> <!--Fin de navbar -->
+
+        <!--Inicio Modal-->
+        <p:dialog widgetVar="tip" modal="true" showEffect="explode" hideEffect="explode" resizable="false">
+            <p:ajax event="close" listener="#{managedClientes.limpiar()}" update=":tp" />
+            <h:form id="tp">
+                <p:panelGrid columns="2">
+
+
+                    <p:outputLabel for="txtLicencia" value="Nombre"/>
+                    <p:inputText id="txtLicencia" value="#{managedClientes.clientes.nombre}" required="true"/>
+                    <p:outputLabel for="txtLicencia" value="Apellido"/>
+                    <p:inputText  id="txtLicencia1" value="#{managedClientes.clientes.apellido}" required="true"/>
+                    <p:outputLabel for="txtLicencia2" value="Email"/>
+                    <p:inputText type="Email" id="txtLicencia2" value="#{managedClientes.clientes.email}" required="true"/>
+                    <p:outputLabel for="txtLicencia3" value="DUI"/>
+                    <p:inputText  id="txtLicencia3" value="#{managedClientes.clientes.dui}" required="true"/>
+                    <p:outputLabel for="txtLicencia4" value="NIT"/>
+                    <p:inputText  id="txtLicencia4" value="#{managedClientes.clientes.nit}" required="true"/>
+                    <p:outputLabel for="txtLicencia5" value="fecha de Nacimiento"/>
+                    <p:inputText  id="txtLicencia5" value="#{managedClientes.clientes.fechaNacimiento}" required="true"/>
+                    <p:outputLabel for="txtLicencia6" value="Telefono"/>
+                    <p:inputText  id="txtLicencia6" value="#{managedClientes.clientes.telefono}" required="true"/>
+                    <p:outputLabel for="txtLicencia7" value="Icono"/>
+                    <p:inputNumber  id="txtLicencia7" value="#{managedClientes.clientes.icono}" required="true"/>
+                    <p:outputLabel for="txtLicencia8" value="seguridad"/>
+                    <p:inputText  id="txtLicencia8" value="#{managedClientes.clientes.seguridad}" required="true"/>
+
+                    <p:outputLabel for="txtLicencia9" value="Extranjero"/>
+                    <p:selectOneMenu id="txtLicencia9" value="#{managedClientes.extranjeros.extranjero}">
+                        <f:selectItem itemLabel="#{managedClientes.clientes.extranjeros.extranjero}" itemValue="" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="No" itemValue="0"/>
+                        <f:selectItem itemLabel="Si" itemValue="1"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="txtLicencia91" value="Fecha de Expiracion Extranjero"/>
+                    <p:inputText type="Date" id="txtLicencia91" value="#{managedClientes.extranjeros.fechaExpiracion}" required="true"/>
+
+                    <p:outputLabel for="txtLicencia10" value="Licencia"/>
+                    <p:selectOneMenu id="txtLicencia10" value="#{managedClientes.licencias.idLicencia}">
+                        <f:selectItem itemLabel="#{managedClientes.clientes.idLicencia.nombre}" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{managedClientes.listaLicencias}" var="lil" itemLabel="#{lil.nombre}" itemValue="#{lil.idLicencia}"/>
+                    </p:selectOneMenu>
+
+
+                    <p:outputLabel  value="Accion"/>
+                    <p:commandButton value="Guardar" actionListener="#{managedClientes.insertar_clientes()}"
+                                     rendered="#{managedClientes.clientes.idClientes == 0}"
+                                     update=":Datos tp :msj" oncomplete="PF('tip').hide()" />
+                    <p:commandButton value="Actualizar" actionListener="#{managedClientes.actualizar_clientes()}"
+                                     rendered="#{managedClientes.clientes.idClientes != 0}"
+                                     update=":Datos tp :msj" oncomplete="PF('tip').hide()" />
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+
+        <!--Fin de Modal -->
+
+        <div class="row">        
+            <div class="col s3"><!--Inicia Menu laterial -->
+                <ui:include src="menu.xhtml"/>
+            </div> <!--Termina menu laterial -->
+
+            <div class="col s9"><!--Inicia cuerpo de la pagina -->
+
+                <h:form id="Datos">
+                    <p:fieldset legend="Datos Licencia" toggleable="true">
+                        <p:dataTable value="#{managedClientes.listacliente}" var="lic">
+                           
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="nombre"/>
+                                </f:facet>
+                                <h:outputText value="#{lic.nombre}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="apellido"/>
+                                </f:facet>
+                                <h:outputText value="#{lic.apellido}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="email"/>
+                                </f:facet>
+                                <h:outputText value="#{lic.email}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="dui"/>
+                                </f:facet>
+                                <h:outputText value="#{lic.dui}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="nit"/>
+                                </f:facet>
+                                <h:outputText value="#{lic.nit}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="fecha de nacimiento"/>
+                                </f:facet>
+                                <h:outputText value="#{lic.fechaNacimiento}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="telefono"/>
+                                </f:facet>
+                                <h:outputText value="#{lic.telefono}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="icono"/>
+                                </f:facet>
+                                <h:outputText value="#{lic.icono}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="seguridad"/>
+                                </f:facet>
+                                <h:outputText value="#{lic.seguridad}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Extranjero"/>
+                                </f:facet>
+                                <h:outputText value="#{lic.extranjeros.extranjero}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Fecha de Expiracion Extranjero"/>
+                                </f:facet>
+                                <h:outputText value="#{lic.extranjeros.fechaExpiracion}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="licencia"/>
+                                </f:facet>
+                                <h:outputText value="#{lic.idLicencia.nombre}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Opciones"/>
+                                </f:facet>
+                                <p:commandButton value="Editar" actionListener="#{managedClientes.consultarId_clientes(lic)}"
+                                                 update=":tp" oncomplete="PF('tip').show()" />
+                                <p:commandButton value="Eliminar" actionListener="#{managedClientes.eliminar(lic)}"
+                                                 update=":Datos :msj"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:fieldset>
+                </h:form>
+
+            </div><!--Termina cuerpo de la pagina -->
+        </div>
+
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    </h:body>
+</html>
+

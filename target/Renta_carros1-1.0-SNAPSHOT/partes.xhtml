@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
+    </h:head>
+    <h:body>
+        <p:growl id="msj"/>
+
+
+        <nav> <!--Inicio de navbar -->
+            <div class="nav">
+                <a href="#" class="brand-logo">Tipo Partes</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <h:form id="da">
+                        <p:commandButton value="Nuevo" oncomplete="PF('tip').show()"/>
+                    </h:form>
+                    <!-- <li><a href="" oncomplete="PF('tip').show()">Nuevo</a></li>-->
+                </ul>
+            </div>
+        </nav> <!--Fin de navbar -->
+
+        <!--Inicio Modal-->
+        <p:dialog widgetVar="tip" modal="true" showEffect="explode" hideEffect="explode" resizable="false">
+            <p:ajax event="close" listener="#{managedPartes.limpiar()}" update=":tp" />
+            
+            <h:form id="tp">
+                <p:outputLabel for="txtPartes" value="Nombre"/>
+                <p:inputText id="txtPartes" value="#{managedPartes.partes.nombre}" required="true"/>
+                <p:outputLabel for="txtfuncionamiento" value="funcionamiento"/>
+                <p:inputText id="txtfuncionamiento" value="#{managedPartes.partes.funcionamiento}" required="true"/>
+                <p:outputLabel for="txttipo" value="Tipo"/>
+                <p:inputText id="txttipo" value="#{managedPartes.partes.tipo}" required="true"/>
+
+                <p:commandButton value="Guardar" actionListener="#{managedPartes.insertar_parte()}"
+                                 
+                                 update=":Datos tp :msj" oncomplete="PF('tip').hide()" />
+                
+                <p:commandButton value="Actualizar" actionListener="#{managedPartes.actualizar_parte()}"
+                                 rendered="#{managedPartes.partes.idParte != 0}"
+                                 update=":Datos tp :msj" oncomplete="PF('tip').hide()" />
+
+            </h:form>
+        </p:dialog>
+
+        <!--Fin de Modal -->
+
+        <div class="row">        
+            <div class="col s3"><!--Inicia Menu laterial -->
+                <ui:include src="menu.xhtml"/>
+            </div> <!--Termina menu laterial -->
+
+            <div class="col s9"><!--Inicia cuerpo de la pagina -->
+
+                <h:form id="Datos">
+                    <p:fieldset legend="Datos Partes" toggleable="true">
+                        <p:dataTable value="#{managedPartes.listaPartes}" var="p">
+                            
+
+                            <p:column headerText="nombre">
+                                <h:outputText value="#{p.nombre}"/>
+                            </p:column>
+
+                            <p:column headerText="funcionamiento">
+                                <h:outputText value="#{p.funcionamiento}"/>
+                            </p:column>
+
+                            <p:column headerText="Tipo" width="100">
+                                <h:outputText value="#{p.tipo}"/>
+                            </p:column>
+
+                            <p:column headerText="Opciones">
+                                
+                                <p:commandButton value="Editar" actionListener="#{managedPartes.consultarId_partes(p)}"
+                                                 update=":tp" oncomplete="PF('tip').show()"/>
+                                
+                                <p:commandButton value="Eliminar" actionListener="#{managedPartes.eliminar_parte(p)}"
+                                                 update=":Datos :msj"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:fieldset>
+                </h:form>
+
+            </div><!--Termina cuerpo de la pagina -->
+        </div>
+
+
+
+       
+    </h:body>
+</html>

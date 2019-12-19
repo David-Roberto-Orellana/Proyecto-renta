@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
+        
+    </h:head>  
+    <h:body>
+         <p:growl id="msj"/>
+         
+         
+        <nav> <!--Inicio de navbar -->
+            <div class="nav">
+                <label>Tipo Usuario</label>
+              
+                    
+                    <h:form id="da">
+                    <p:commandButton value="Nuevo" oncomplete="PF('us').show()"/>
+                    </h:form>
+                   <!-- <li><a href="" oncomplete="PF('tip').show()">Nuevo</a></li>-->
+                
+            </div>
+        </nav> <!--Fin de navbar -->
+        
+        
+        
+        <!--Inicio Modal-->
+        <p:dialog widgetVar="us" modal="true" showEffect="explode" hideEffect="explode" resizable="false">
+            <p:ajax event="close" listener="#{ManagedUsuario.limpiar_usuario()}" update=":usu" />
+            
+            <h:form id="usu">
+               
+                    <p:outputLabel for="txtNombre" value="Nombre"/>
+                    <p:inputText id="txtNombre" value="#{ManagedUsuario.usuarios.nombre}" required="true"/>
+                    
+                    <p:outputLabel for="txtEmail" value="Email"/>
+                    <p:inputText id="txtEmail" value="#{ManagedUsuario.usuarios.email}" required="true"/>
+                    
+                    <p:outputLabel for="txtDireccion" value="Direccion"/>
+                    <p:inputText id="txtDireccion" value="#{ManagedUsuario.usuarios.direccion}" required="true"/>
+                    
+                    <p:outputLabel for="txtSeguridad" value="Seguridad"/>
+                    <p:inputText id="txtSeguridad" value="#{ManagedUsuario.usuarios.seguridad}" required="true"/>
+                    
+                    <p:outputLabel for="txtTipo" value="Tipo"/>
+                    <p:inputText id="txtTipo" value="#{ManagedUsuario.usuarios.tipo}" required="true"/>
+                    
+                    <p:commandButton value="Guardar" actionListener="#{ManagedUsuario.insertar_usuario()}"
+                                     rendered="#{ManagedUsuario.usuarios.idUsuario == 0}"
+                                     update=":Datos usu :msj" oncomplete="PF('us').hide()"
+                                     />
+                    <p:commandButton value="Actualizar" actionListener="#{ManagedUsuario.actualizar_usuario()}"
+                                     rendered="#{ManagedUsuario.usuarios.idUsuario != 0}"
+                                     update=":Datos usu :msj" oncomplete="PF('us').hide()"/>                
+            </h:form>
+        </p:dialog>
+          <!--Fin de Modal -->
+         <div class="row">        
+            <div class="col s2"><!--Inicia Menu laterial -->
+                <ui:include src="menu.xhtml"/>
+            </div> <!--Termina menu laterial -->
+
+            <div class="contenido"><!--Inicia cuerpo de la pagina -->
+
+               
+                <h:form id="Datos">
+                    <p:fieldset legend="Datos Usuario" toggleable="true">
+                        <p:dataTable value="#{ManagedUsuario.listaUsuarios}" var="u">
+                           
+
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{u.nombre}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Email" width="200">
+                                 <h:outputText value="#{u.email}"/>
+                            </p:column>
+                            
+                             <p:column headerText="Direccion">
+                                 <h:outputText value="#{u.direccion}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Seguridad" width="110">
+                                 <h:outputText value="#{u.seguridad}"/>
+                            </p:column>
+
+                            <p:column headerText="Tipo" width="50">
+                                 <h:outputText value="#{u.tipo}"/>
+                            </p:column>
+                            
+                            <p:column headerText="Opciones">
+                                
+                                <p:commandButton value="EDITAR" actionListener="#{ManagedUsuario.ConsultarId_usuario(u)}"
+                                                 update=":usu" oncomplete="PF('us').show()"/>
+                                
+                                <p:commandButton value="ELIMINAR" actionListener="#{ManagedUsuario.eliminar_usuarios(u)}"
+                                                 update=":Datos :msj"/>
+                            </p:column>
+                    </p:dataTable>
+                </p:fieldset>
+            </h:form>
+
+        </div><!--Termina cuerpo de la pagina -->
+    </div>
+          
+       
+    </h:body>
+</html>
+

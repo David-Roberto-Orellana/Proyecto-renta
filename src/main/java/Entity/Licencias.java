@@ -6,34 +6,60 @@
 package Entity;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author azucena.rivasusam
+ * @author cesar.murciausam
  */
 @Entity
 @Table(name = "licencias")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Licencias.findAll", query = "SELECT l FROM Licencias l")
+    , @NamedQuery(name = "Licencias.findByIdLicencia", query = "SELECT l FROM Licencias l WHERE l.idLicencia = :idLicencia")
+    , @NamedQuery(name = "Licencias.findByNombre", query = "SELECT l FROM Licencias l WHERE l.nombre = :nombre")})
 public class Licencias implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_licencia;
-    
+    @Basic(optional = false)
+    @Column(name = "id_licencia")
+    private Integer idLicencia;
+    @Size(max = 25)
     @Column(name = "nombre")
     private String nombre;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idLicencia")
+    private List<Clientes> clientesList;
 
-    public int getId_licencia() {
-        return id_licencia;
+    public Licencias() {
     }
 
-    public void setId_licencia(int id_licencia) {
-        this.id_licencia = id_licencia;
+    public Licencias(Integer idLicencia) {
+        this.idLicencia = idLicencia;
+    }
+
+    public Integer getIdLicencia() {
+        return idLicencia;
+    }
+
+    public void setIdLicencia(Integer idLicencia) {
+        this.idLicencia = idLicencia;
     }
 
     public String getNombre() {
@@ -44,26 +70,30 @@ public class Licencias implements Serializable {
         this.nombre = nombre;
     }
 
+    @XmlTransient
+    public List<Clientes> getClientesList() {
+        return clientesList;
+    }
+
+    public void setClientesList(List<Clientes> clientesList) {
+        this.clientesList = clientesList;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 59 * hash + this.id_licencia;
+        int hash = 0;
+        hash += (idLicencia != null ? idLicencia.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Licencias)) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Licencias other = (Licencias) obj;
-        if (this.id_licencia != other.id_licencia) {
+        Licencias other = (Licencias) object;
+        if ((this.idLicencia == null && other.idLicencia != null) || (this.idLicencia != null && !this.idLicencia.equals(other.idLicencia))) {
             return false;
         }
         return true;
@@ -71,9 +101,7 @@ public class Licencias implements Serializable {
 
     @Override
     public String toString() {
-        return "Licencias{" + "id_licencia=" + id_licencia + '}';
+        return "EJB.Licencias[ idLicencia=" + idLicencia + " ]";
     }
     
-    
-
 }

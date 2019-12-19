@@ -6,9 +6,11 @@
 package EJB;
 
 import Entity.Clientes;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -17,7 +19,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class ClientesFacade extends AbstractFacade<Clientes> implements ClientesFacadeLocal {
 
-    @PersistenceContext(unitName = "com.mycompany_Sistema_Renta_Carros_war_1.0-SNAPSHOTPU")
+    @PersistenceContext(unitName = "carros_PU")
     private EntityManager em;
 
     @Override
@@ -28,5 +30,29 @@ public class ClientesFacade extends AbstractFacade<Clientes> implements Clientes
     public ClientesFacade() {
         super(Clientes.class);
     }
-    
-}
+
+    @Override
+    public int Last_id() {
+        int id = 0;
+        String sql = "SELECT c FROM Clientes c "
+                + "ORDER BY c.id_clientes DESC "
+                + "limit 1;";
+        try {
+            Query q = em.createQuery(sql);
+            List<Clientes> lista= q.getResultList();
+            if (!lista.isEmpty()) {
+                id = lista.get(0).getIdClientes();
+            }
+        } catch (Exception e) {
+            
+            System.out.println("*********************************************");
+            System.out.println("*********************************************");
+            System.out.println("Error al ejecutar Last_id");
+            System.out.println(e);
+            System.out.println("*********************************************");
+            System.out.println("*********************************************");
+        }
+        return id;
+        }
+
+    }

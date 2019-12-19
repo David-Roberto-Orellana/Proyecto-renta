@@ -1,5 +1,6 @@
 package Controllers;
 
+import EJB.MarcasFacadeLocal;
 import EJB.ModelosFacadeLocal;
 import Entity.Marcas;
 import Entity.Modelos;
@@ -7,28 +8,44 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 
-@ManagedBean
+@Named(value = "managedModelos")
 @SessionScoped
-public class managedModelos implements Serializable{
-    String mensaje;
+public class managedModelos implements Serializable {
+
+    
+
     @EJB
-    private ModelosFacadeLocal modelosFacade;
+    private ModelosFacadeLocal modelosFacadeLocal;
     private List<Modelos> listaModelos;
     private Modelos modelos;
+
+    @EJB
+    private MarcasFacadeLocal marcaEJB;  
+    private List<Marcas> listaMarcas;
     private Marcas marcas;
 
+String mensaje;
     public List<Modelos> getListaModelos() {
-        this.listaModelos = this.modelosFacade.findAll();
+    listaModelos = modelosFacadeLocal.findAll();
         return listaModelos;
     }
 
     public void setListaModelos(List<Modelos> listaModelos) {
         this.listaModelos = listaModelos;
+    }
+
+    public List<Marcas> getListaMarcas() {
+        listaMarcas = marcaEJB.findAll();
+        return listaMarcas;
+    }
+
+    public void setListaMarcas(List<Marcas> listaMarcas) {
+        this.listaMarcas = listaMarcas;
     }
 
     public Modelos getModelos() {
@@ -46,27 +63,26 @@ public class managedModelos implements Serializable{
     public void setMarcas(Marcas marcas) {
         this.marcas = marcas;
     }
+
     @PostConstruct
-    public void init(){
+    public void init() {
         this.modelos = new Modelos();
         this.marcas = new Marcas();
     }
-    
-    
-    public void consultar_modelos(){
+
+    public void consultar_modelos() {
         try {
-            modelosFacade.findAll();
+            this.modelosFacadeLocal.findAll();
         } catch (Exception e) {
-            this.mensaje = "Error al Consulta";
+      
         }
-        FacesMessage msj = new FacesMessage(this.mensaje);
-        FacesContext.getCurrentInstance().addMessage(mensaje, msj);
+       
     }
 
-    
     public void insertar_vehiculos() {
         try {
-            modelosFacade.create(modelos);
+            modelos.setIdMarca(marcas);
+            modelosFacadeLocal.create(modelos);
             this.mensaje = "Insertado Correctamente";
         } catch (Exception e) {
             this.mensaje = "Error al Insertar";
@@ -77,7 +93,7 @@ public class managedModelos implements Serializable{
 
     public void actualizar_vehiculos() {
         try {
-            modelosFacade.edit(modelos);
+            modelosFacadeLocal.edit(modelos);
             this.mensaje = "Actualizado Correctamente";
         } catch (Exception e) {
             this.mensaje = "Error al Actualizar";
@@ -86,10 +102,11 @@ public class managedModelos implements Serializable{
         FacesContext.getCurrentInstance().addMessage(mensaje, msj);
     }
 
-    public void eliminar_vehiculos() {
+    public void eliminar_vehiculos(Modelos mod) {
+        this.modelos=mod;
         try {
-            modelosFacade.remove(modelos);
-            listaModelos = modelosFacade.findAll();
+            modelosFacadeLocal.remove(modelos);
+            listaModelos = modelosFacadeLocal.findAll();
             this.mensaje = "Eliminado Correctamente";
         } catch (Exception e) {
             this.mensaje = "Error al Eliminar";
@@ -104,7 +121,10 @@ public class managedModelos implements Serializable{
         } catch (Exception e) {
         }
     }
+    
+     public void limpiar_Modelos() {
+        this.modelos = new Modelos();
+        modelos.setIdModelo(0);
+    }
 
-    
-    
 }

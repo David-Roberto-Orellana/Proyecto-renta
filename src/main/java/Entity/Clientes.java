@@ -6,6 +6,8 @@
 package Entity;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,57 +15,112 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author azucena.rivasusam
+ * @author cesar.murciausam
  */
 @Entity
 @Table(name = "clientes")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Clientes.findAll", query = "SELECT c FROM Clientes c")
+    , @NamedQuery(name = "Clientes.findByIdClientes", query = "SELECT c FROM Clientes c WHERE c.idClientes = :idClientes")
+    , @NamedQuery(name = "Clientes.findByNombre", query = "SELECT c FROM Clientes c WHERE c.nombre = :nombre")
+    , @NamedQuery(name = "Clientes.findByApellido", query = "SELECT c FROM Clientes c WHERE c.apellido = :apellido")
+    , @NamedQuery(name = "Clientes.findByEmail", query = "SELECT c FROM Clientes c WHERE c.email = :email")
+    , @NamedQuery(name = "Clientes.findByDui", query = "SELECT c FROM Clientes c WHERE c.dui = :dui")
+    , @NamedQuery(name = "Clientes.findByNit", query = "SELECT c FROM Clientes c WHERE c.nit = :nit")
+    , @NamedQuery(name = "Clientes.findByFechaNacimiento", query = "SELECT c FROM Clientes c WHERE c.fechaNacimiento = :fechaNacimiento")
+    , @NamedQuery(name = "Clientes.findByTelefono", query = "SELECT c FROM Clientes c WHERE c.telefono = :telefono")
+    , @NamedQuery(name = "Clientes.findByIcono", query = "SELECT c FROM Clientes c WHERE c.icono = :icono")
+    , @NamedQuery(name = "Clientes.findBySeguridad", query = "SELECT c FROM Clientes c WHERE c.seguridad = :seguridad")})
 public class Clientes implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_clientes;
-
+    @Basic(optional = false)
+    @Column(name = "id_clientes")
+    private Integer idClientes;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 25)
     @Column(name = "nombre")
     private String nombre;
-
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 25)
     @Column(name = "apellido")
     private String apellido;
-
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
     @Column(name = "email")
     private String email;
-
+    @Size(max = 10)
     @Column(name = "dui")
     private String dui;
-
+    @Size(max = 17)
     @Column(name = "nit")
     private String nit;
-
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 10)
     @Column(name = "fecha_nacimiento")
-    private String fecha_nacimiento;
-
+    private String fechaNacimiento;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 9)
     @Column(name = "telefono")
     private String telefono;
-
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "icono")
     private int icono;
-
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
     @Column(name = "seguridad")
     private String seguridad;
-
-    @ManyToOne(optional = false)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "clientes")
+    private Extranjeros extranjeros;
     @JoinColumn(name = "id_licencia", referencedColumnName = "id_licencia")
-    private Licencias licencias;
+    @ManyToOne(optional = false)
+    private Licencias idLicencia;
 
-    public int getId_clientes() {
-        return id_clientes;
+    public Clientes() {
     }
 
-    public void setId_clientes(int id_clientes) {
-        this.id_clientes = id_clientes;
+    public Clientes(Integer idClientes) {
+        this.idClientes = idClientes;
+    }
+
+    public Clientes(Integer idClientes, String nombre, String apellido, String email, String fechaNacimiento, String telefono, int icono, String seguridad) {
+        this.idClientes = idClientes;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.email = email;
+        this.fechaNacimiento = fechaNacimiento;
+        this.telefono = telefono;
+        this.icono = icono;
+        this.seguridad = seguridad;
+    }
+
+    public Integer getIdClientes() {
+        return idClientes;
+    }
+
+    public void setIdClientes(Integer idClientes) {
+        this.idClientes = idClientes;
     }
 
     public String getNombre() {
@@ -106,12 +163,12 @@ public class Clientes implements Serializable {
         this.nit = nit;
     }
 
-    public String getFecha_nacimiento() {
-        return fecha_nacimiento;
+    public String getFechaNacimiento() {
+        return fechaNacimiento;
     }
 
-    public void setFecha_nacimiento(String fecha_nacimiento) {
-        this.fecha_nacimiento = fecha_nacimiento;
+    public void setFechaNacimiento(String fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
 
     public String getTelefono() {
@@ -138,34 +195,37 @@ public class Clientes implements Serializable {
         this.seguridad = seguridad;
     }
 
-    public Licencias getLicencias() {
-        return licencias;
+    public Extranjeros getExtranjeros() {
+        return extranjeros;
     }
 
-    public void setLicencias(Licencias licencias) {
-        this.licencias = licencias;
+    public void setExtranjeros(Extranjeros extranjeros) {
+        this.extranjeros = extranjeros;
+    }
+
+    public Licencias getIdLicencia() {
+        return idLicencia;
+    }
+
+    public void setIdLicencia(Licencias idLicencia) {
+        this.idLicencia = idLicencia;
     }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 53 * hash + this.id_clientes;
+        int hash = 0;
+        hash += (idClientes != null ? idClientes.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Clientes)) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Clientes other = (Clientes) obj;
-        if (this.id_clientes != other.id_clientes) {
+        Clientes other = (Clientes) object;
+        if ((this.idClientes == null && other.idClientes != null) || (this.idClientes != null && !this.idClientes.equals(other.idClientes))) {
             return false;
         }
         return true;
@@ -173,7 +233,7 @@ public class Clientes implements Serializable {
 
     @Override
     public String toString() {
-        return "Clientes{" + "id_clientes=" + id_clientes + '}';
+        return "EJB.Clientes[ idClientes=" + idClientes + " ]";
     }
-
+    
 }

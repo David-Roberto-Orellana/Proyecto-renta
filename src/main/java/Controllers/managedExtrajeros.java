@@ -1,13 +1,15 @@
 package Controllers;
 
+import EJB.ClientesFacadeLocal;
 import EJB.ExtranjerosFacadeLocal;
+import Entity.Clientes;
 import Entity.Extranjeros;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
@@ -15,15 +17,37 @@ import javax.inject.Named;
 @SessionScoped
 public class managedExtrajeros implements Serializable {
 
-    @EJB
-
-    private List<Extranjeros> listaextranjero;
-    private ExtranjerosFacadeLocal clientesEJBFacadeLocal;
-    private Extranjeros extranjeros;
     String mensaje;
 
+    @EJB
+    private ExtranjerosFacadeLocal ExtranjerosEJBFacadeLocal;
+    private List<Extranjeros> listaextranjero;
+    private Extranjeros extranjeros;
+
+    @EJB
+    private ClientesFacadeLocal clientesEJBFacadeLocal;
+    private List<Clientes> listaClientes;
+    private Clientes clietnes;
+
+    public List<Clientes> getListaClientes() {
+        this.listaClientes=this.clientesEJBFacadeLocal.findAll();
+        return listaClientes;
+    }
+
+    public void setListaClientes(List<Clientes> listaClientes) {
+        this.listaClientes = listaClientes;
+    }
+
+    public Clientes getClietnes() {
+        return clietnes;
+    }
+
+    public void setClietnes(Clientes clietnes) {
+        this.clietnes = clietnes;
+    }
+
     public List<Extranjeros> getListaextranjero() {
-        this.listaextranjero = this.clientesEJBFacadeLocal.findAll();
+        this.listaextranjero = this.ExtranjerosEJBFacadeLocal.findAll();
         return listaextranjero;
     }
 
@@ -44,16 +68,17 @@ public class managedExtrajeros implements Serializable {
         extranjeros = new Extranjeros();
     }
 
-     public void consultar_extranjeros() {
+    public void consultar_extranjeros() {
         try {
-            listaextranjero = clientesEJBFacadeLocal.findAll();
+            listaextranjero = ExtranjerosEJBFacadeLocal.findAll();
         } catch (Exception e) {
         }
 
     }
+
     public void insertar_extranjeros() {
         try {
-            clientesEJBFacadeLocal.create(extranjeros);
+            ExtranjerosEJBFacadeLocal.create(extranjeros);
             this.mensaje = "Insertado Correctamente";
         } catch (Exception e) {
             this.mensaje = "Error al Insertar";
@@ -63,18 +88,16 @@ public class managedExtrajeros implements Serializable {
 
     }
 
-   
-    
-    public void consultarId_extranjeros(Extranjeros extran){
+    public void consultarId_extranjeros(Extranjeros extran) {
         try {
-            this.extranjeros=extran;
+            this.extranjeros = extran;
         } catch (Exception e) {
         }
     }
-    
+
     public void actualizar_extranjeros() {
         try {
-            clientesEJBFacadeLocal.edit(extranjeros);
+            ExtranjerosEJBFacadeLocal.edit(extranjeros);
             this.mensaje = "Actualizado Correctamente";
         } catch (Exception e) {
             this.mensaje = "Error al Actualizado";
@@ -83,17 +106,16 @@ public class managedExtrajeros implements Serializable {
         FacesContext.getCurrentInstance().addMessage(mensaje, msg);
 
     }
-    
-    public void eliminar_extranjeros(Extranjeros extran){
-        this.extranjeros=extran;
+
+    public void eliminar_extranjeros(Extranjeros extran) {
+        this.extranjeros = extran;
         try {
-            clientesEJBFacadeLocal.remove(extranjeros);
-            listaextranjero=clientesEJBFacadeLocal.findAll();
+            ExtranjerosEJBFacadeLocal.remove(extranjeros);
+            listaextranjero = ExtranjerosEJBFacadeLocal.findAll();
             this.mensaje = "Eliminado Correctamente";
         } catch (Exception e) {
             this.mensaje = "Error al Eliminar";
         }
-}
-    
+    }
 
 }

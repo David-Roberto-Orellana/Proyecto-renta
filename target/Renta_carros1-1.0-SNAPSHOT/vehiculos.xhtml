@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
+    </h:head>
+    <h:body>
+        <p:growl id="msj" />
+        <div class="nav">
+            <label>Vehiculos</label>
+            <h:form id="da">
+                <p:commandButton value="Nuevo" oncomplete="PF('tip').show()"/>
+            </h:form>
+        </div>
+
+        <p:dialog widgetVar="tip" modal="true" showEffect="fold" hideEffect="size" resizable="false">
+            <p:ajax event="close" listener="#{managedVehiculos.limpiar()}" update=":tp" />
+            <h:form id="tp">
+                <p:outputLabel for="txtVehiculos" value="Fecha de Ingreso"/>
+                <p:inputText type="date" id="txtVehiculos" value="#{managedVehiculos.vehiculos.fechaIngreso}" required="true"/>
+                <p:outputLabel for="txtVehiculos" value="Color"/>
+                <p:inputText id="txtVehiculos2" value="#{managedVehiculos.vehiculos.color}" required="true"/>
+                <p:outputLabel for="txtVehiculos" value="Placa"/>
+                <p:inputText id="txtVehiculos3" value="#{managedVehiculos.vehiculos.placa}" required="true"/>
+                <p:outputLabel for="txtVehiculos" value="Descripcion"/>
+                <p:inputText id="txtVehiculos4" value="#{managedVehiculos.vehiculos.descripcion}" required="true"/>
+                <p:outputLabel for="txtVehiculos" value="Precio"/>
+                <p:inputText id="txtVehiculos5" value="#{managedVehiculos.vehiculos.precio}" required="true"/>
+                <p:outputLabel for="txtVehiculos" value="IMG"/>
+                <p:inputText id="txtVehiculos7" value="#{managedVehiculos.vehiculos.img}" required="true"/>
+                <p:outputLabel for="txtVehiculos" value="Modelo"/>
+                <p:inputText id="txtVehiculos8" value="#{managedVehiculos.vehiculos.idModelo.nombre}" required="true"/>
+                <p:commandButton value="Guardar" actionListener="#{managedVehiculos.insertar_vehiculos()}"
+                                 rendered="#{managedVehiculos.vehiculos.idVehiculo == 0}"
+                                 update=":Datos tp :msj" oncomplete="PF('tip').hide()" />
+                <p:commandButton value="Actualizar" actionListener="#{managedVehiculos.actualizar_vehiculos()}"
+                                 rendered="#{managedVehiculos.vehiculos.idVehiculo != 0}"
+                                 update=":Datos tp :msj" oncomplete="PF('tip').hide()" />
+            </h:form>
+
+        </p:dialog>
+        <div class="menu">        
+            <ui:include src="menu.xhtml"/>
+        </div> <!--Termina menu laterial -->
+
+        <div class="contenido">
+            <h:form id="Datos">
+                <p:fieldset legend="Datos Vehiculos" toggleable="true">
+                    <p:dataTable value="#{managedVehiculos.listaVehiculos}" var="veh">
+                        
+                        <p:column headerText="Fecha de Ingreso">
+                            <h:outputText value="#{veh.fechaIngreso}"/>
+                        </p:column>
+
+                        <p:column headerText="Color">
+                            <h:outputText value="#{veh.color}"/>
+                        </p:column>
+
+                        <p:column headerText="Placa">
+                            <h:outputText value="#{veh.placa}"/>
+                        </p:column>
+
+                        <p:column headerText="Descripcion">
+                            <h:outputText value="#{veh.descripcion}"/>
+                        </p:column>
+
+                        <p:column headerText="Precio">
+                            <h:outputText value="#{veh.precio}"/>
+                        </p:column>
+
+                        <p:column headerText="Img">
+                            <img src="#{veh.img}" width="100" height="100" />
+                        </p:column>
+
+                        <p:column headerText="Modelo">
+                            <h:outputText value="#{veh.idModelo.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Opciones">
+                            <p:commandButton value="Editar" actionListener="#{managedVehiculos.consultarID_vehiculos(veh)}"
+                                             update=":tp" oncomplete="PF('tip').show()" />
+                            <p:commandButton value="Eliminar" actionListener="#{managedVehiculos.eliminar_vehiculos(veh)}"
+                                             update=":Datos :msj"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:fieldset>
+            </h:form>
+        </div>
+    </h:body>
+</html>

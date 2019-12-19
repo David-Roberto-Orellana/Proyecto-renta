@@ -53,7 +53,7 @@ public class managedVehiculos implements Serializable {
     public void init() {
         this.vehiculos = new Vehiculos();
         this.modelos = new Modelos();
-
+        this.vehiculos.setIdVehiculo(0);
     }
 
     public void consultar_vehiculos() {
@@ -88,7 +88,8 @@ public class managedVehiculos implements Serializable {
         FacesContext.getCurrentInstance().addMessage(mensaje, msj);
     }
 
-    public void eliminar_vehiculos() {
+    public void eliminar_vehiculos(Vehiculos veh) {
+        this.vehiculos = veh;
         try {
             vehiculosFacade.remove(vehiculos);
             listaVehiculos = vehiculosFacade.findAll();
@@ -101,10 +102,17 @@ public class managedVehiculos implements Serializable {
     }
 
     public void consultarID_vehiculos(Vehiculos veh) {
+                this.vehiculos = veh;
         try {
             this.vehiculos = veh;
         } catch (Exception e) {
         }
+    }
+    
+    public void limpiar(){
+    this.vehiculos = new Vehiculos();
+    this.vehiculos.setIdVehiculo(0);
+    
     }
 
 }
