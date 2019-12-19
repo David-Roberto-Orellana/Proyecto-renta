@@ -39,7 +39,7 @@
                 <p:inputText id="txtanio" value="#{managedModelos.modelos.anio}" required="true"/>
                 <p:outputLabel for="selectMarca" value="Marca"/><br></br>
                 <p:selectOneMenu id="selectMarca" value="#{managedModelos.marcas.idMarca}">
-                   
+                    <f:selectItem itemLabel="seleccione Marca" itemValue="" noSelectionOption="true"/>
                     <f:selectItems value="#{managedMarcas.listamarcas}" var="ma" itemLabel="#{ma.nombre}" itemValue="#{ma.idMarca}"/>
                 </p:selectOneMenu><br></br><br></br>
 
