@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
+    </h:head>
+    <h:body>
+        <p:growl id="msj" />
+
+
+        <!--cuadro flotante inseter-->
+        <nav> <!--Inicio de navbar -->
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo">Reparaciones</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <h:form id="d">
+                        <p:commandButton value="Nuevo" oncomplete="PF('tip').show()"/>
+                    </h:form>
+                    <!-- <li><a href="" oncomplete="PF('tip').show()">Nuevo</a></li>-->
+                </ul>
+            </div>
+        </nav> <!--Fin de navbar -->
+
+        <!--Inicio Modal-->
+        <p:dialog widgetVar="tip" modal="true" showEffect="explode" hideEffect="explode" resizable="false">
+            <p:ajax event="close" listener="#{managedReparaciones.limpiar()}" update=":tp :Datos" />
+            <h:form id="tp">
+
+
+                <p:outputLabel for="txtFechaI" value="Fecha Ingreso"/>
+                <p:inputText id="txtFechaI" value="#{managedReparaciones.reparaciones.fechaIngreso}" required="true"/>
+                <p:outputLabel for="txtDescripcion" value="Descripcion"/>
+                <p:inputText id="txtDescripcion" value="#{managedReparaciones.reparaciones.descripcion}" required="true"/>
+                <!--Combobox de color del auto-->
+                <p:outputLabel for="txtColor" value="Color de Vehiculo" />
+                <p:selectOneMenu id="txtColor" value="#{managedReparaciones.vehiculos.idVehiculo}">
+                    <f:selectItem itemValue="" itemLabel="#{managedReparaciones.reparaciones.idVehiculo.color}" noSelectionOption="true" rendered="#{managedReparaciones.reparaciones.idReparacion != 0}"  />
+                    <f:selectItems value="#{managedVehiculos.listaVehiculos}" var="vehi"
+                                   itemLabel="#{vehi.color}" itemValue="#{vehi.idVehiculo}" />
+                </p:selectOneMenu><br></br>
+                <!--Combobox de placa del auto-->
+                <p:outputLabel for="txtNumeroP" value="Numero Placa" />
+                <p:selectOneMenu id="txtNumeroP" value="#{managedReparaciones.vehiculos.idVehiculo}">
+                    <f:selectItems value="#{managedVehiculos.listaVehiculos}" var="pla"
+                                   itemLabel="#{pla.placa}" itemValue="#{pla.idVehiculo}" /> 
+                    <f:selectItem itemValue="" itemLabel="#{managedReparaciones.reparaciones.idVehiculo.placa}" noSelectionOption="true" rendered="#{managedReparaciones.reparaciones.idReparacion != 0}" />
+                </p:selectOneMenu><br></br>
+                <!--Combobox de nombre de partes-->
+                <p:outputLabel for="txtNombre" value="Nombre" />
+                <p:selectOneMenu id="txtNombre" value="#{managedReparaciones.partes.idParte}">
+                    <f:selectItem itemValue="" itemLabel="#{managedReparaciones.reparaciones.idParte.nombre}" noSelectionOption="true" rendered="#{managedReparaciones.reparaciones.idReparacion != 0}" />
+                    <f:selectItems value="#{managedPartes.listaPartes}" var="par"
+                                   itemLabel="#{par.nombre}" itemValue="#{par.idParte}" />
+                </p:selectOneMenu><br></br>
+                <!--Combobox de partes de las piezas-->
+                <p:outputLabel for="txtFuncionamiento" value="Funcionamiento de Pieza"/>
+                <p:selectOneMenu id="txtFuncionamiento" value="#{managedReparaciones.partes.idParte}">
+                    <f:selectItem itemValue="" itemLabel="#{managedReparaciones.reparaciones.idParte.tipo}" noSelectionOption="true" rendered="#{managedReparaciones.reparaciones.idReparacion != 0}" />
+                    <f:selectItems value="#{managedPartes.listaPartes}" var="pars"
+                                   itemLabel="#{pars.tipo}" itemValue="#{pars.idParte}" />
+                </p:selectOneMenu><br></br>
+
+                <p:commandButton value="Guardar" actionListener="#{managedReparaciones.guardar()}"
+                                 rendered="#{managedReparaciones.reparaciones.idReparacion == 0}"
+                                 update=":Datos tp :msj" oncomplete="PF('tip').hide()" />
+
+                <p:commandButton value="Actualizar" actionListener="#{managedReparaciones.actualizar()}"
+                                 rendered="#{managedReparaciones.reparaciones.idReparacion != 0}"
+                                 update=":Datos tp :msj" oncomplete="PF('tip').hide()" />
+
+
+            </h:form>
+        </p:dialog>
+
+        <!--Fin de Modal -->
+
+        <div class="row">
+            <!--Mostrar cuadro de reparaciones-->
+            <div class="menu">
+                <ui:include src="menu.xhtml"/>
+            </div>
+            <div class="contenido">
+                <h:form id="Datos">
+                    <p:fieldset legend="Datos Reparacion" toggleable="true">
+                        <p:dataTable value="#{managedReparaciones.listaReparaciones}" var="rep">
+
+                            <p:column headerText="Fecha de ingreso">
+                                <h:outputText value="#{rep.fechaIngreso}" />
+                            </p:column>
+                            <p:column headerText="Descripcion">
+                                <h:outputText value="#{rep.descripcion}" />
+                            </p:column>
+                            <p:column headerText="Color de vehiculo">
+                                <h:outputText value="#{rep.idVehiculo.color}"/>
+                            </p:column>
+                            <p:column headerText="Numero de placa">
+                                <h:outputText value="#{rep.idVehiculo.placa}" />
+                            </p:column>
+                            <p:column headerText="Nombre de la pieza">
+                                <h:outputText value="#{rep.idParte.nombre}" />
+                            </p:column>
+
+                            <p:column headerText="Cantidad de Pieza">
+                                <h:outputText value="#{rep.idParte.tipo}"/>
+                            </p:column>
+                            <p:column headerText="Update">
+                                <p:commandButton  value="Editar" actionListener="#{managedReparaciones.consultarById(rep)}" 
+                                                  update=":tp" oncomplete="PF('tip').show()"/>
+
+                                <p:commandButton  value="Eliminar" actionListener="#{managedReparaciones.eliminar(rep)}" 
+                                                  update=":Datos :msj"/>
+                            </p:column>
+
+
+                        </p:dataTable>
+                    </p:fieldset>
+                </h:form>
+            </div>
+        </div>
+
+
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    </h:body>
+</html>
