@@ -30,7 +30,6 @@ public class managedExtrajeros implements Serializable {
     private Clientes clietnes;
 
     public List<Clientes> getListaClientes() {
-        this.listaClientes=this.clientesEJBFacadeLocal.findAll();
         return listaClientes;
     }
 
@@ -64,8 +63,9 @@ public class managedExtrajeros implements Serializable {
     }
 
     @PostConstruct
-    public void init() {
+    private void init() {
         extranjeros = new Extranjeros();
+        listaextranjero = ExtranjerosEJBFacadeLocal.findAll();
     }
 
     public void consultar_extranjeros() {
@@ -116,6 +116,11 @@ public class managedExtrajeros implements Serializable {
         } catch (Exception e) {
             this.mensaje = "Error al Eliminar";
         }
+    }
+
+    public void limpiar() {
+        extranjeros = new Extranjeros();
+        listaextranjero = ExtranjerosEJBFacadeLocal.findAll();
     }
 
 }

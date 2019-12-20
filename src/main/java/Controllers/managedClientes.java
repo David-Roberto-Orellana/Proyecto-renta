@@ -37,7 +37,7 @@ public class managedClientes implements Serializable {
     private Extranjeros extranjeros;
 
     public List<Extranjeros> getListaextranjero() {
-        ExtranjerosEJBFacadeLocal.findAll();
+        listaextranjero = ExtranjerosEJBFacadeLocal.findAll();
         return listaextranjero;
     }
 
@@ -63,7 +63,7 @@ public class managedClientes implements Serializable {
     }
 
     public List<Clientes> getListacliente() {
-        this.listacliente = this.clientesEJBFacadeLocal.findAll();
+        listacliente = clientesEJBFacadeLocal.findAll();
         return listacliente;
     }
 
@@ -96,12 +96,13 @@ public class managedClientes implements Serializable {
     }
 
     @PostConstruct
-
     private void init() {
         clientes = new Clientes();
         licencias = new Licencias();
         extranjeros = new Extranjeros();
         clientes.setIdClientes(0);
+        listaextranjero = ExtranjerosEJBFacadeLocal.findAll();
+        listacliente = clientesEJBFacadeLocal.findAll();
     }
 
     public void consultar_clientes() {
@@ -115,11 +116,11 @@ public class managedClientes implements Serializable {
     public void insertar_clientes() {
         try {
             clientes.setIdLicencia(licencias);
-            
             clientesEJBFacadeLocal.create(clientes);
             extranjeros.setIdExtranjero(clientesEJBFacadeLocal.Last_id());
-            System.out.println("******************************************"+clientesEJBFacadeLocal.Last_id());
+            System.out.println("******************************************" + clientesEJBFacadeLocal.Last_id());
             ExtranjerosEJBFacadeLocal.create(extranjeros);
+            listacliente = clientesEJBFacadeLocal.findAll();
             this.mensaje = "Insertado Correctamente";
         } catch (Exception e) {
             this.mensaje = "Error al Insertar";
@@ -131,6 +132,8 @@ public class managedClientes implements Serializable {
 
     public void consultarId_clientes(Clientes cliente) {
         try {
+            this.licencias.setIdLicencia(cliente.getIdLicencia().getIdLicencia());
+            this.extranjeros.setIdExtranjero(cliente.getExtranjeros().getIdExtranjero());
             this.clientes = cliente;
         } catch (Exception e) {
         }
@@ -138,7 +141,9 @@ public class managedClientes implements Serializable {
 
     public void actualizar_clientes() {
         try {
+            clientes.setIdLicencia(licencias);
             clientesEJBFacadeLocal.edit(clientes);
+            listacliente = clientesEJBFacadeLocal.findAll();
             this.mensaje = "Actualizado Correctamente";
         } catch (Exception e) {
             this.mensaje = "Error al Actualizar";
@@ -150,18 +155,24 @@ public class managedClientes implements Serializable {
 
     public void eliminar(Clientes cliente) {
         try {
+            clientes = cliente;
             this.clientesEJBFacadeLocal.remove(clientes);
             listacliente = clientesEJBFacadeLocal.findAll();
             this.mensaje = "Eliminado Correctamente";
         } catch (Exception e) {
             this.mensaje = "Error al Eliminar";
         }
+        FacesMessage msg = new FacesMessage(this.mensaje);
+        FacesContext.getCurrentInstance().addMessage(mensaje, msg);
     }
 
     public void limpiar() {
         clientes = new Clientes();
         licencias = new Licencias();
         extranjeros = new Extranjeros();
+        managedClientes a = new managedClientes();
+        listaextranjero = a.ExtranjerosEJBFacadeLocal.findAll();
+        listacliente = a.clientesEJBFacadeLocal.findAll();
         clientes.setIdClientes(0);
     }
 

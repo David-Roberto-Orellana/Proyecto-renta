@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"></link>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
+    </h:head>
+    <h:body>
+
+        <p:growl id="msj"/>
+
+        <nav> <!--Inicio de navbar -->
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo">Tipo Licencia</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                   
+                    <!-- <li><a href="" oncomplete="PF('tip').show()">Nuevo</a></li>-->
+                </ul>
+            </div>
+        </nav> <!--Fin de navbar -->
+
+        <!--Inicio Modal-->
+        <p:dialog widgetVar="tip" modal="true" showEffect="explode" hideEffect="explode" resizable="false">
+            <p:ajax event="close" listener="#{managedExtrajeros.limpiar()}" update=":tp :Datos" />
+            <h:form id="tp">
+                <p:panelGrid columns="2">
+
+
+                    <p:outputLabel for="txtLicencia9" value="Extranjero"/>
+                    <p:selectOneMenu id="txtLicencia9" value="#{managedExtrajeros.extranjeros.extranjero}">
+                        <f:selectItem itemLabel="#{managedExtrajeros.extranjeros.extranjero}" itemValue="" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="No" itemValue="0"/>
+                        <f:selectItem itemLabel="Si" itemValue="1"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="txtLicencia91" value="Fecha de Expiracion Extranjero"/>
+                    <p:inputText type="Date" id="txtLicencia91" value="#{managedExtrajeros.extranjeros.fechaExpiracion}" required="true"/>
+
+                    <p:outputLabel  value="Accion"/>
+
+                    <p:commandButton value="Actualizar" actionListener="#{managedExtrajeros.actualizar_extranjeros()}"
+                                     update=":Datos tp :msj" oncomplete="PF('tip').hide()" />
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+
+
+
+
+        <!--Fin de Modal -->
+
+        <div class="row">        
+            <div class="col s3"><!--Inicia Menu laterial -->
+                <ui:include src="menu.xhtml"/>
+            </div> <!--Termina menu laterial -->
+
+            <div class="col s9"><!--Inicia cuerpo de la pagina -->
+
+                <h:form id="Datos">
+                    <p:fieldset legend="Datos Licencia" toggleable="true">
+                        <p:dataTable value="#{managedExtrajeros.listaextranjero}" var="lic">
+
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="id"/>
+                                </f:facet>
+                                <h:outputText value="#{lic.idExtranjero}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre cliente"/>
+                                </f:facet>
+                                <h:outputText value="#{lic.clientes.nombre}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Extranjero"/>
+                                </f:facet>
+                                <h:outputText value="#{lic.extranjero}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Fecha de Expiracion"/>
+                                </f:facet>
+                                <h:outputText value="#{lic.fechaExpiracion}"/>
+                            </p:column>S
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Opciones"/>
+                                </f:facet>
+                                <p:commandButton value="Editar" actionListener="#{managedExtrajeros.consultarId_extranjeros(lic)}"
+                                                 update=":tp" oncomplete="PF('tip').show()" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:fieldset>
+                </h:form>
+
+            </div><!--Termina cuerpo de la pagina -->
+        </div>
+
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    </h:body>
+</html>
+

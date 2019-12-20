@@ -15,16 +15,15 @@
          <p:growl id="msj"/>
          
          
-        <nav> <!--Inicio de navbar -->
-            <div class="nav">
-                <label>Tipo Usuario</label>
-              
-                    
+       <nav> <!--Inicio de navbar -->
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo">Usuario</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <h:form id="da">
-                    <p:commandButton value="Nuevo" oncomplete="PF('us').show()"/>
+                        <p:commandButton value="Nuevo" oncomplete="PF('us').show()"/>
                     </h:form>
-                   <!-- <li><a href="" oncomplete="PF('tip').show()">Nuevo</a></li>-->
-                
+                    <!-- <li><a href="" oncomplete="PF('tip').show()">Nuevo</a></li>-->
+                </ul>
             </div>
         </nav> <!--Fin de navbar -->
         
@@ -96,10 +95,10 @@
                             
                             <p:column headerText="Opciones">
                                 
-                                <p:commandButton value="EDITAR" actionListener="#{ManagedUsuario.ConsultarId_usuario(u)}"
+                                <p:commandButton value="Editar" actionListener="#{ManagedUsuario.ConsultarId_usuario(u)}"
                                                  update=":usu" oncomplete="PF('us').show()"/>
                                 
-                                <p:commandButton value="ELIMINAR" actionListener="#{ManagedUsuario.eliminar_usuarios(u)}"
+                                <p:commandButton value="Eliminar" actionListener="#{ManagedUsuario.eliminar_usuarios(u)}"
                                                  update=":Datos :msj"/>
                             </p:column>
                     </p:dataTable>

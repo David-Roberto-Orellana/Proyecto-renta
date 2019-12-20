@@ -4,21 +4,29 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <title>Facelet Title</title>
         <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"></link>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
     </h:head>
     <h:body>
         <p:growl id="msj" />
-        <div class="nav">
-            <label>Vehiculos</label>
-            <h:form id="da">
-                <p:commandButton value="Nuevo" oncomplete="PF('tip').show()"/>
-            </h:form>
-        </div>
-
-        <p:dialog widgetVar="tip" modal="true" showEffect="fold" hideEffect="size" resizable="false">
+        <nav> <!--Inicio de navbar -->
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo">Vehiculos</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <h:form id="da">
+                        <p:commandButton value="Nuevo" oncomplete="PF('tip').show()"/>
+                    </h:form>
+                    <!-- <li><a href="" oncomplete="PF('tip').show()">Nuevo</a></li>-->
+                </ul>
+            </div>
+        </nav> <!--Fin de navbar -->
+        
+        <p:dialog widgetVar="tip" modal="true" showEffect="explode" hideEffect="explode" resizable="false">
             <p:ajax event="close" listener="#{managedVehiculos.limpiar()}" update=":tp" />
             <h:form id="tp">
                 <p:outputLabel for="txtVehiculos" value="Fecha de Ingreso"/>
@@ -44,52 +52,56 @@
             </h:form>
 
         </p:dialog>
-        <div class="menu">        
-            <ui:include src="menu.xhtml"/>
-        </div> <!--Termina menu laterial -->
+        <div class="row">
+            <div class="col s3">   <!--Inicia menu laterial -->      
+                <ui:include src="menu.xhtml"/>
+            </div> <!--Termina menu laterial -->
 
-        <div class="contenido">
-            <h:form id="Datos">
-                <p:fieldset legend="Datos Vehiculos" toggleable="true">
-                    <p:dataTable value="#{managedVehiculos.listaVehiculos}" var="veh">
-                        
-                        <p:column headerText="Fecha de Ingreso">
-                            <h:outputText value="#{veh.fechaIngreso}"/>
-                        </p:column>
+            <div class="col s9">
+                <h:form id="Datos">
+                    <p:fieldset legend="Datos Vehiculos" toggleable="true">
+                        <p:dataTable value="#{managedVehiculos.listaVehiculos}" var="veh">
 
-                        <p:column headerText="Color">
-                            <h:outputText value="#{veh.color}"/>
-                        </p:column>
+                            <p:column headerText="Fecha de Ingreso">
+                                <h:outputText value="#{veh.fechaIngreso}"/>
+                            </p:column>
 
-                        <p:column headerText="Placa">
-                            <h:outputText value="#{veh.placa}"/>
-                        </p:column>
+                            <p:column headerText="Color">
+                                <h:outputText value="#{veh.color}"/>
+                            </p:column>
 
-                        <p:column headerText="Descripcion">
-                            <h:outputText value="#{veh.descripcion}"/>
-                        </p:column>
+                            <p:column headerText="Placa">
+                                <h:outputText value="#{veh.placa}"/>
+                            </p:column>
 
-                        <p:column headerText="Precio">
-                            <h:outputText value="#{veh.precio}"/>
-                        </p:column>
+                            <p:column headerText="Descripcion">
+                                <h:outputText value="#{veh.descripcion}"/>
+                            </p:column>
 
-                        <p:column headerText="Img">
-                            <img src="#{veh.img}" width="100" height="100" />
-                        </p:column>
+                            <p:column headerText="Precio">
+                                <h:outputText value="#{veh.precio}"/>
+                            </p:column>
 
-                        <p:column headerText="Modelo">
-                            <h:outputText value="#{veh.idModelo.nombre}"/>
-                        </p:column>
+                            <p:column headerText="Img">
+                                <img src="#{veh.img}" width="100" height="100" />
+                            </p:column>
 
-                        <p:column headerText="Opciones">
-                            <p:commandButton value="Editar" actionListener="#{managedVehiculos.consultarID_vehiculos(veh)}"
-                                             update=":tp" oncomplete="PF('tip').show()" />
-                            <p:commandButton value="Eliminar" actionListener="#{managedVehiculos.eliminar_vehiculos(veh)}"
-                                             update=":Datos :msj"/>
-                        </p:column>
-                    </p:dataTable>
-                </p:fieldset>
-            </h:form>
+                            <p:column headerText="Modelo">
+                                <h:outputText value="#{veh.idModelo.nombre}"/>
+                            </p:column>
+
+                            <p:column headerText="Opciones">
+                                <p:commandButton value="Editar" actionListener="#{managedVehiculos.consultarID_vehiculos(veh)}"
+                                                 update=":tp" oncomplete="PF('tip').show()" />
+                                <p:commandButton value="Eliminar" actionListener="#{managedVehiculos.eliminar_vehiculos(veh)}"
+                                                 update=":Datos :msj"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:fieldset>
+                </h:form>
+            </div>
+
         </div>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     </h:body>
 </html>

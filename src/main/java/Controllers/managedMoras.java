@@ -154,6 +154,7 @@ public class managedMoras implements Serializable {
 
     public void consultarID_mora(Moras mora) {
         try {
+            this.historiales.setIdHistorial(mora.getIdHistorial().getIdHistorial());
             this.mora = mora;
         } catch (Exception e) {
         }

@@ -35,8 +35,7 @@ public class ClientesFacade extends AbstractFacade<Clientes> implements Clientes
     public int Last_id() {
         int id = 0;
         String sql = "SELECT c FROM Clientes c "
-                + "ORDER BY c.id_clientes DESC "
-                + "limit 1;";
+                + "ORDER BY c.idClientes DESC";
         try {
             Query q = em.createQuery(sql);
             List<Clientes> lista= q.getResultList();
