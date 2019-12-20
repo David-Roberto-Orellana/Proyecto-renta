@@ -1,0 +1,96 @@
+commit dc9595a05444c8ead94d49999482cd3b0746adc8
+Author: David_Roberto.Orellana <2522692015@mail.utec.edu.sv>
+Date:   Fri Dec 20 09:36:22 2019 -0600
+
+    CRUD completos
+
+commit b1100f916382e2e337b4a1ddb619fd09ef897ea6
+Author: David_Roberto.Orellana <2522692015@mail.utec.edu.sv>
+Date:   Fri Dec 20 09:18:52 2019 -0600
+
+    Modificacion en vistas y managed y facadeCliente falta Eulalio
+
+commit 72c5eef4fec149747c01ab589adc22e0e0eee1f4
+Author: David_Roberto.Orellana <2522692015@mail.utec.edu.sv>
+Date:   Thu Dec 19 16:49:33 2019 -0600
+
+    modificacion de modelo.xhtml falta lalo y cesar
+
+commit bc04b2b41028e6be9093f299fefd7a586c8228f5
+Author: David_Roberto.Orellana <2522692015@mail.utec.edu.sv>
+Date:   Thu Dec 19 16:32:45 2019 -0600
+
+    modificacion modelos y falta cesar, Eulalio
+
+commit c1cadfe596243a3fd3298a3432913df217f9cdd8
+Author: David_Roberto.Orellana <2522692015@mail.utec.edu.sv>
+Date:   Thu Dec 19 15:47:06 2019 -0600
+
+    modificacion en modelos.xhtml, falta cesar,eulalio
+
+commit 5f58f81fe921ffd6f4510962bf3eb5c524f3be40
+Author: David_Roberto.Orellana <2522692015@mail.utec.edu.sv>
+Date:   Thu Dec 19 15:26:42 2019 -0600
+
+    modificacion d managedLicencia,falta cesar,eulalio
+
+commit 99bf50ce2377afdd1728c3abfcf29c42697f7708
+Merge: 9d37b58 6621e8d
+Author: David_Roberto.Orellana <2522692015@mail.utec.edu.sv>
+Date:   Thu Dec 19 14:16:59 2019 -0600
+
+    Solo falta eulalio y cesar
+
+commit 9d37b586e7cab5c31a58d574aeed9be96f1d7d24
+Author: David_Roberto.Orellana <2522692015@mail.utec.edu.sv>
+Date:   Thu Dec 19 14:10:17 2019 -0600
+
+    controller y vistas faltan Eulalio y Cesar
+
+commit 6621e8dc0745e0fd3320b5dafcc8d3989773068d
+Author: David_Roberto.Orellana <2522692015@mail.utec.edu.sv>
+Date:   Mon Dec 16 14:43:16 2019 -0600
+
+    Modificando todo el proyecto
+
+commit fc823cc6a6bf40239a2fb5f63c7e131ce85fc1d5
+Author: Richie Killer <ricardo.incedro@gmail.com>
+Date:   Mon Dec 16 14:23:48 2019 -0600
+
+    Elimine el archivo de david
+
+commit 827f0e8647daf697890fa2cc93585cc05fa8d1d2
+Author: David_Roberto.Orellana <2522692015@mail.utec.edu.sv>
+Date:   Mon Dec 16 13:42:33 2019 -0600
+
+    Eliminado archivo otro.txt creado nuevoDavid.txt
+
+commit d5b745de9acc448241ce7f67ca5e41a382613bbf
+Author: AzucenaRivas <azucenarivas@hotmail.com>
+Date:   Mon Dec 16 13:35:25 2019 -0600
+
+    Agregando archivo otro.txt
+
+commit e44ffbb5ce4945179f66d453d35321ae15fa8b50
+Author: AzucenaRivas <azucenarivas@hotmail.com>
+Date:   Mon Dec 16 11:43:53 2019 -0600
+
+    Agregando archivo nuevo.txt
+
+commit c250d36c5d26364e5ca35322df7bb913f508e6dd
+Author: David_Roberto.Orellana <2522692015@mail.utec.edu.sv>
+Date:   Mon Dec 16 11:17:08 2019 -0600
+
+    Actualizando los controllers
+
+commit c966068092a6a92e76cf2266c933b35c81c71fb9
+Author: David_Roberto.Orellana <2522692015@mail.utec.edu.sv>
+Date:   Mon Dec 16 10:21:50 2019 -0600
+
+    Subiendo los controllers
+
+commit 8a21ef5fa21879c6856985ef20f4f9f796da4950
+Author: David_Roberto.Orellana <2522692015@mail.utec.edu.sv>
+Date:   Fri Dec 13 15:29:48 2019 -0600
+
+    aqui se solo estan los entity y los EJB
